@@ -1,6 +1,11 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-export const Container = styled.label`
+interface InputProps {
+    isFilled: boolean,
+    hasError?: boolean
+}
+
+export const Container = styled.label<InputProps>`
     display: block;
     background-color: ${props => props.theme.colors.inputBackground};
     display: flex;
@@ -9,10 +14,13 @@ export const Container = styled.label`
     border-radius: 10px;
     padding: 18px;
     width: 100%;
+    border: solid 1px transparent;
+    transition: all .3s ease;
     
     svg {
         margin-right: 18px;
         width: 16px;
+        transition: all .3s ease;
     }
 
     input {
@@ -37,4 +45,30 @@ export const Container = styled.label`
     svg + input {
         max-width: calc(100% - 34px);
     }
+
+    &:focus-within {
+        svg {
+            color: ${props => props.theme.colors.primary} !important;
+        }
+
+        border-color: ${props => props.theme.colors.primary};
+    }
+
+    ${props => props.isFilled && css`
+        svg {
+            color: ${props => props.theme.colors.primary} !important;
+        }
+    `}
+
+    ${props => props.hasError && css`
+        border-color: ${props => props.theme.colors.error};
+
+        svg {
+            color: ${props => props.theme.colors.error} !important;      
+        }
+
+        input + div {
+            margin-left: 16px;
+        }
+    `}
 `

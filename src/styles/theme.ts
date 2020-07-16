@@ -6,7 +6,8 @@ const theme: DefaultTheme = {
         text: '#FFF',
         textLight: '#666360',
         primary: '#FF9000',
-        inputBackground: '#232129'
+        inputBackground: '#232129',
+        error: '#FA331F'
     }
 }
 

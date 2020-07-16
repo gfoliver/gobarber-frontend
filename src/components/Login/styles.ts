@@ -47,16 +47,6 @@ export const FormWrapper = styled.div`
 
     @media only screen and (max-width: 660px) {
         padding: 50px 30px;
-
-        >a {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            border-top: solid 1px ${props => props.theme.colors.inputBackground};
-            justify-content: center;
-        }
     }
 `
 

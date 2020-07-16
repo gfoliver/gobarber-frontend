@@ -8,6 +8,7 @@ declare module 'styled-components' {
             textLight: string
             primary: string
             inputBackground: string
+            error: string
         }
     }
 }
