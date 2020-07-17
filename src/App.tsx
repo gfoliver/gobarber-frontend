@@ -1,19 +1,16 @@
 import React from 'react'
-
-import { ThemeProvider } from 'styled-components'
-import theme from './styles/theme'
-import Global from './styles/Global'
-
+import AppProvider from './hooks'
 import Router from './Routes'
+import Global from './styles/Global'
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider theme={theme}>
+    <AppProvider>
       <div className="App">
-        <Global />
         <Router />
+        <Global />
       </div>
-    </ThemeProvider>
+    </AppProvider>
   )
 }
 

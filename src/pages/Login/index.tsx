@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useContext } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { FiMail, FiLock, FiLogIn } from 'react-icons/fi'
 import logoImg from '../../assets/logo.svg'
@@ -6,15 +6,16 @@ import logoImg from '../../assets/logo.svg'
 import theme from '../../styles/theme'
 import { Container, FormWrapper, Background } from './styles'
 
-import Input from '../Input'
-import Button from '../Button'
+import Input from '../../components/Input'
+import Button from '../../components/Button'
 
 import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
 import getValidationErrors from '../../utils/getValidationErrors'
 
-import { AuthContext } from '../../context/authContext'
+import { useAuth } from '../../hooks/Auth'
+import { useToasts } from '../../hooks/Toast'
 
 interface LoginForm {
     email: string
@@ -23,7 +24,8 @@ interface LoginForm {
 
 const Login: React.FC = () => {
     const formRef = useRef<FormHandles>(null)
-    const { signIn } = useContext(AuthContext)
+    const { signIn } = useAuth()
+    const { addToast } = useToasts()
 
     const handleSubmit = useCallback(async (data: LoginForm) => {
         formRef.current?.setErrors({})
@@ -38,20 +40,26 @@ const Login: React.FC = () => {
                 abortEarly: false
             })
 
-            try {
-                const authData = await signIn(data)
-
-                console.log(authData)
-            }
-            catch(err) {
-                console.log(err)
-            }
+            await signIn(data)
+            addToast({
+                title: "Sucesso!",
+                description: "Login efetuado com sucesso",
+                type: "success"
+            })
         }
         catch(error) {
-            const errors = getValidationErrors(error)
-            formRef.current?.setErrors(errors)
+            if (error instanceof Yup.ValidationError) {
+                const errors = getValidationErrors(error)
+                formRef.current?.setErrors(errors)
+            }
+
+            addToast({
+                title: "Erro",
+                description: "Erro ao efetuar o login",
+                type: "error"
+            })
         }
-    }, [signIn])
+    }, [signIn, addToast])
 
     return (
         <Container>

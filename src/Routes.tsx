@@ -2,10 +2,10 @@ import React from 'react'
 
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
-import Login from './components/Login'
-import Register from './components/Register'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
-import { AuthProvider } from './context/authContext'
+import { AuthProvider } from './hooks/Auth'
 
 const Routes: React.FC = () => {
     return (
