@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import backgroundImg from '../../assets/login-background.png'
 
 export const Container = styled.div`
@@ -6,6 +6,17 @@ export const Container = styled.div`
     min-height: 100vh;
     display: flex;
     align-items: stretch;
+`
+
+const animation = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    to {
+        opacity: 1;
+    }
 `
 
 export const FormWrapper = styled.div`
@@ -19,6 +30,7 @@ export const FormWrapper = styled.div`
 
     img {
         margin-bottom: 80px;
+        animation: ${animation} .7s;
     }
 
     h1 {
@@ -34,15 +46,18 @@ export const FormWrapper = styled.div`
     form {
         margin-bottom: 80px;
         width: 100%;
+        animation: ${animation} .7s;
 
         a {
             color: ${props => props.theme.colors.text};
+            animation: none;
         }
     }
 
     a {
         margin: 0 auto;
         width: fit-content;
+        animation: ${animation} .7s;
     }
 
     @media only screen and (max-width: 660px) {

@@ -1,6 +1,6 @@
 import React from 'react'
 import AppProvider from './hooks'
-import Router from './Routes'
+import Router from './routes'
 import Global from './styles/Global'
 
 const App: React.FC = () => {

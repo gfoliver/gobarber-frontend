@@ -9,6 +9,7 @@ interface ToastProps {
     title: string
     description: string
     type?: "info" | "success" | "error"
+    style: object
 }
 
 const icons = {
@@ -17,7 +18,7 @@ const icons = {
     error: <FiAlertCircle />,
 }
 
-const Toast: React.FC<ToastProps> = ({ id, title, description, type = "info" }) => {
+const Toast: React.FC<ToastProps> = ({ id, title, description, type = "info", style }) => {
     const { removeToast } = useToasts()
 
     const remove = useCallback(() => {
@@ -25,7 +26,7 @@ const Toast: React.FC<ToastProps> = ({ id, title, description, type = "info" }) 
     }, [removeToast, id]);
 
     return (
-        <ToastStyle type={type}>
+        <ToastStyle type={type} style={style}>
             { icons[type] }
             <div className="content">
                 <div className="title">{ title }</div>

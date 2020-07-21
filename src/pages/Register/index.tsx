@@ -1,15 +1,21 @@
 import React, { useCallback, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi'
-import logoImg from '../../assets/logo.svg'
-import { Container, FormWrapper, Background } from './styles'
-import Input from '../../components/Input'
-import Button from '../../components/Button'
-import theme from '../../styles/theme'
 import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
+
+import logoImg from '../../assets/logo.svg'
+
+import { Container, FormWrapper, Background } from './styles'
+import theme from '../../styles/theme'
+
+import Input from '../../components/Input'
+import Button from '../../components/Button'
 import getValidationErrors from '../../utils/getValidationErrors'
+
+import { useToasts } from '../../hooks/Toast'
+import api from '../../services/api'
 
 interface RegisterForm {
     email: string
@@ -19,6 +25,8 @@ interface RegisterForm {
 
 const Register: React.FC = () => {
     const formRef = useRef<FormHandles>(null)
+    const { addToast } = useToasts()
+    const history = useHistory()
 
     const handleSubmit = useCallback(async (data: RegisterForm) => {
         formRef.current?.setErrors({})
@@ -34,12 +42,31 @@ const Register: React.FC = () => {
                 abortEarly: false
             })
 
-            console.log(data)
+            await api.post('/users', data)
+            
+            addToast({
+                type: "success",
+                title: "Cadastro efetuado!",
+                description: "Sucesso no cadastro! Faça seu login"
+            })
+
+            history.push('/login')
+
         } catch (error) {
-            const errors = getValidationErrors(error)
-            formRef.current?.setErrors(errors)
+            if (error instanceof Yup.ValidationError) {
+                const errors = getValidationErrors(error)
+                formRef.current?.setErrors(errors)
+                
+                return
+            }
+
+            addToast({
+                type: "error",
+                title: "Erro no cadastro",
+                description: "Houve um erro ao executar o seu cadastro, tente novamente."
+            })
         }
-    }, [])
+    }, [addToast, history])
 
     return (
         <Container>
